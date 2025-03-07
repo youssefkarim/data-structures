@@ -7,6 +7,10 @@ typedef int ElementType;
 
 class Node {
 public:
+    Node() {
+        next = nullptr;
+        prev = nullptr;
+    };
     ElementType data;
     Node* next;
     Node* prev;
@@ -21,6 +25,11 @@ private:
     Position tail;   //points to the last node
     int counter;
 public:
+  DoublyList() {
+    head = nullptr;
+    tail = nullptr;
+    counter = 0;
+  }
     void MakeNull();
     Position First();
     Position Next(Position p);
@@ -65,7 +74,7 @@ Position DoublyList::End() {
 }
 
 void DoublyList::InsertAtStart(ElementType x) {
-    Position newNode = new Node;
+    Position newNode = new Node();
     newNode->data = x;
     newNode->next = head;
     newNode->prev = nullptr;
@@ -83,7 +92,7 @@ void DoublyList::InsertAtStart(ElementType x) {
 }
 
 void DoublyList::InsertAtEnd(ElementType x) {
-    Position newNode = new Node;
+    Position newNode = new Node();
     newNode->data = x;
     newNode->next = nullptr;
     newNode->prev = tail;
@@ -108,7 +117,7 @@ void DoublyList::InsertAt(ElementType x, Position p = nullptr) {
         InsertAtStart(x);
     }
     else {
-        Position newNode = new Node;
+        Position newNode = new Node();
         newNode->data = x;
         newNode->next = p->next;
         newNode->prev = p;
@@ -162,7 +171,7 @@ Position DoublyList::Locate(ElementType x) {
 
 ElementType DoublyList::Retrieve(Position p) {
   if(p == nullptr) {
-    return nullptr;
+    return NULL;
   }
   return p->data;
 }
@@ -185,5 +194,10 @@ int main() {
   list.InsertAt(-30, list.First());
   list.InsertAt(-10, list.First());
   list.InsertAt(20, list.End());
+  Position n10 = list.Locate(10);
+  list.Delete(n10);
+  Position n20 = list.Locate(20);
+  list.Delete(n20);
   list.PrintList();
+  return 0;
 }
