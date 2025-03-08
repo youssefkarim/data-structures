@@ -32,12 +32,17 @@ public:
   }
     void MakeNull();
     Position First();
+    Position End();
+
     Position Next(Position p);
     Position Previous(Position p);
-    Position End();
+
     void InsertAtEnd(ElementType x);
     void InsertAtStart(ElementType x);
     void InsertAt(ElementType x, Position p);
+    void InsertAfter(ElementType x, Position p);
+    void InsertBefore(ElementType x, Position p);
+
     void Delete(Position p);
     Position Locate(int x);
     ElementType Retrieve(Position p);
@@ -109,6 +114,7 @@ void DoublyList::InsertAtEnd(ElementType x) {
     counter++;
 }
 
+// This method insert node after p
 void DoublyList::InsertAt(ElementType x, Position p = nullptr) {
     if(p == nullptr) {
         InsertAtEnd(x);
@@ -132,6 +138,25 @@ void DoublyList::InsertAt(ElementType x, Position p = nullptr) {
         }
         counter++;
     }
+}
+
+void DoublyList::InsertAfter(ElementType x, Position p) {
+    InsertAt(x, p);
+}
+
+void DoublyList::InsertBefore(ElementType x, Position p) {
+    Position newNode = new Node();
+    newNode->data = x;
+    newNode->prev = p->prev;
+    newNode->next = p;
+    if(p->prev != nullptr) {
+        p->prev->next = newNode;
+    }
+    p->prev = newNode;
+    if(p == head) {
+        head = newNode;
+    }
+    counter++;
 }
 
 void DoublyList::Delete(Position p) {
@@ -201,3 +226,48 @@ int main() {
   list.PrintList();
   return 0;
 }
+
+//calculates the summation of all values in the list.
+ElementType Sum(DoublyList L)
+{
+    Position curr=L.First();
+    ElementType s=0;
+    while(curr!=NULL)
+    {
+        ElementType x=L.Retrieve(curr);
+        s=s+x;
+        curr=L.Next(curr);
+    }
+    return s;
+}
+
+DoublyList Reverse(DoublyList l1)
+{
+    DoublyList l2;
+    Position pos=l1.First();
+    while (pos!=NULL)
+    {
+        int x=l1.Retrieve(pos);
+        l2.InsertAt(x,l2.First());
+        pos=l1.Next(pos);
+    }
+    return l2;
+}
+
+//splits the linked to two lists, one for odd numbers and one for even numbers
+void Split(DoublyList L, DoublyList& lOdd, DoublyList& lEven)
+{
+    Position curr=L.First();
+    //while(curr!=L.END())
+    while(curr!=NULL)
+    {
+        int x=L.Retrieve(curr);
+        if (x%2==0)
+            lEven.InsertAt(x);
+        else
+            lOdd.InsertAt(x);
+
+        curr=L.Next(curr);
+    }
+}
+
