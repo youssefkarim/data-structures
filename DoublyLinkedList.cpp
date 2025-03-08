@@ -125,6 +125,27 @@ void DoublyList::InsertAt(ElementType x, Position p = nullptr) {
     else {
         Position newNode = new Node();
         newNode->data = x;
+        newNode->prev = p->prev;
+        newNode->next = p;
+        if(p->prev != nullptr) {
+            p->prev->next = newNode;
+        }
+        p->prev = newNode;
+
+        counter++;
+    }
+}
+
+void DoublyList::InsertAfter(ElementType x, Position p) {
+    if(p == nullptr) {
+        InsertAtEnd(x);
+    }
+    else if(p == head) {
+        InsertAtStart(x);
+    }
+    else {
+        Position newNode = new Node();
+        newNode->data = x;
         newNode->next = p->next;
         newNode->prev = p;
 
@@ -140,23 +161,8 @@ void DoublyList::InsertAt(ElementType x, Position p = nullptr) {
     }
 }
 
-void DoublyList::InsertAfter(ElementType x, Position p) {
-    InsertAt(x, p);
-}
-
 void DoublyList::InsertBefore(ElementType x, Position p) {
-    Position newNode = new Node();
-    newNode->data = x;
-    newNode->prev = p->prev;
-    newNode->next = p;
-    if(p->prev != nullptr) {
-        p->prev->next = newNode;
-    }
-    p->prev = newNode;
-    if(p == head) {
-        head = newNode;
-    }
-    counter++;
+    InsertAt(x, p);
 }
 
 void DoublyList::Delete(Position p) {
